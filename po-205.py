@@ -15,6 +15,9 @@ import math
 MODULUS = 1012924417
 
 def main():
+
+#    return [ print(x) for x in partitions_fast(10, 3, 6) ]
+
     ncases = int( input() )
     [ solve_case() for _ in range(ncases) ]
     return
@@ -33,16 +36,18 @@ def solve_case():
         prolls.append( ways_to_roll(p, np, sp) )
     # Figure out the number of ways for Colin to roll less than X.
     crolls = [0]
-    for c in range(nc*sc+1):
+    # Note that we want the upper bound to be the maximum value that
+    # Pete can roll. That's the only range of values we care about.
+    for c in range(np*sp+1):
         crolls.append( crolls[-1] + ways_to_roll(c, nc, sc) )
     # Total number of outcomes is sp**np * sc**nc
     total = (sp**np) * (sc**nc)
     # Figure out how many of those have p > c.
     pwins = 0
-    for i, p in enumerate(prolls):
+    for p, c in zip(prolls, crolls):
         # For each number Pete can roll, how many ways are there for him
         # to roll it, and how many of Colin's rolls does he beat?
-        pwins += p*crolls[i]
+        pwins += p*c
     # Report the fraction.
     return report(pwins, total)
 
@@ -65,8 +70,8 @@ def ways_to_roll(pips, ndice, nsides):
     # to the target number. Then, for each arrangement of pips, figure
     # out how many ways it can be rolled.
     ways = 0
-    for part in partitions(pips, ndice, nsides):
-        # The number of ways to roll (1, 1, 1, 4, 7, 7) on six dice is
+    for part in partitions_fast(pips, ndice, nsides):
+        # The number of ways to roll (1, 1, 1, 2, 3, 3) on six dice is
         # 7!/(3! 1! 2!).
         tallies = collections.defaultdict(int)
         for p in part:
@@ -77,6 +82,43 @@ def ways_to_roll(pips, ndice, nsides):
     return ways
 
 # ######################################################################
+
+def partitions_fast(pips, ndice, nsides):
+    # Each die shows at least one pip, so we have only (P-N) free pips.
+    for part in all_partitions_fast(pips - ndice):
+        # Throw away partitions with too many dice, or with too many
+        # pips on a die.
+        if len(part) > ndice or max(part) >= nsides:
+            continue
+        part += [0]*(ndice - len(part))
+        yield [ p+1 for p in part ]
+
+# ----------------------------------------------------------------------
+
+def all_partitions_fast(n):
+    # Fast generation of partitions: https://arxiv.org/abs/0909.2331
+    a = [ 0 for i in range(n + 1) ]
+    k = 1
+    y = n - 1
+    while k != 0:
+        x = a[k - 1] + 1
+        k -= 1
+        while 2 * x <= y:
+            a[k] = x
+            y -= x
+            k += 1
+        l = k + 1
+        while x <= y:
+            a[k] = x
+            a[l] = y
+            yield a[:k + 2]
+            x += 1
+            y -= 1
+        a[k] = x + y
+        y = x + y - 1
+        yield a[:k + 1]
+
+# ----------------------------------------------------------------------
 
 def partitions(pips, ndice, nsides):
     '''Accepts three integer arguments: P, N, S. Determine all possible
