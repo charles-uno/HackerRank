@@ -38,3 +38,16 @@ def factorize(n):
         while n % i == 0:
             n //= i
             yield i
+
+# ----------------------------------------------------------------------
+
+def nth_prime(n):
+    primes = []
+    i = 1
+    while len(primes) < n:
+        i += 1
+        if any( i % p == 0 for p in primes ):
+            continue
+        # Looks like we found a prime!
+        primes.append(i)
+    return primes[-1]
