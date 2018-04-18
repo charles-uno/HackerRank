@@ -25,8 +25,7 @@ def factorize(n):
             continue
         # Looks like we found a prime!
         primes.append(i)
-        # If it's a divisor, divide it out. This will let us hit our
-        # exit condition sooner.
+        # Divide out divisors. Watch out for degeneracy.
         while n % i == 0:
             n //= i
             yield i
