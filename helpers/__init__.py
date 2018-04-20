@@ -1,6 +1,7 @@
 
-
 import collections
+import math
+import numpy as np
 
 # ######################################################################
 
@@ -51,3 +52,29 @@ def nth_prime(n):
         # Looks like we found a prime!
         primes.append(i)
     return primes[-1]
+
+# ----------------------------------------------------------------------
+
+def primes_upto(n):
+    sieve = np.ones(n, dtype=bool)
+    sieve[:2] = False
+    for i in range(2, math.floor(n**0.5)):
+        if sieve[i]:
+            sieve[2*i::i] = False
+    for i in range(n):
+        if sieve[i]:
+            yield i
+
+
+
+
+
+
+
+# ----------------------------------------------------------------------
+
+def divisors(n):
+    for i in range(1, n//2):
+        if n % i == 0:
+            yield i
+    yield n
