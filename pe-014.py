@@ -6,8 +6,6 @@ Charles McEachern
 https://projecteuler.net/problem=14
 """
 
-import helpers
-
 # ######################################################################
 
 def main():
