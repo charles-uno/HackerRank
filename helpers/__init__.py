@@ -58,8 +58,6 @@ def factor_counts(n):
 
 # ######################################################################
 
-
-
 def nth_prime(n):
     primes = []
     i = 1
@@ -86,11 +84,18 @@ def primes_upto(n):
 # ######################################################################
 
 def divisors(n):
-    """Find all divisors of a number by brute force."""
-    for i in range(1, n//2+1):
-        if n % i == 0:
-            yield i
-    yield n
+    if n < 1:
+        raise ValueError('Can\'t factor nonpositive numbers')
+    fc = factor_counts(n)
+    divs = [1]
+    for factor, count in fc.items():
+        divs = { d*factor**i for d in divs for i in range(count+1) }
+    return divs
+
+# ----------------------------------------------------------------------
+
+def proper_divisors(n):
+    return divisors - {n}
 
 # ----------------------------------------------------------------------
 
