@@ -5,6 +5,15 @@ import numpy as np
 
 # ######################################################################
 
+def fibonacci():
+    """Iterator that returns Fibonacci numbers forever."""
+    i, j = 0, 1
+    while True:
+        yield i
+        i, j = j, i+j
+
+# ######################################################################
+
 def scm(*args):
     # Let's figure out the maximum power of 2 we need, and the maximum
     # power of 3, and so on.
