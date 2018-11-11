@@ -31,25 +31,42 @@ import helpers
 
 # ######################################################################
 
+PRIMES = None
+
 def main():
-
-    # Clearly b needs to be prime, since otherwise n=0 gives a nonprime.
-    bvals = helpers.primes_upto(1000)
-
+    global PRIMES
+    # Pretty sure a can be any number. That means -1000 to 1000,
+    # skipping zero.
+    avals = set( range(-1000, 1001) ) - {0}
+    # Clearly b needs to be prime, and thus positive, since otherwise
+    # n=0 gives a nonprime.
+    bvals = list( helpers.primes_upto(1000) )
     # Also we can get a sense for how large these primes are going to
     # get. Both a and b are capped at 1000, and we know n == b is not
     # prime, so the maximum we could possibly hit is just over two
     # million: 1000**2 + 1000*1000 + 1000.
+    PRIMES = set( helpers.primes_upto(2001000) )
+    # Keep track of the best run. For easy comparison, use a (run, a, b)
+    # tuple.
+    best_run = (0, 0, 0)
+    for a in avals:
+        for b in bvals:
+            run = prime_run(a, b)
+            if (run,) > best_run:
+                best_run = (run, a, b)
+    return print( best_run[1]*best_run[2] )
 
-    primes = set( helpers.primes_upto(2001000) )
+# ----------------------------------------------------------------------
 
-
-    # Probably want to come up with a set of primes so we can easily
-    # check if the number we spit out is prime.
-
-
-
-    return
+def prime_run(a, b):
+    """Accept a pair of integers, a and b. Return the number of
+    consecutive primes (starting with n=0) given by
+        n**2 + a*n + b
+    """
+    n = 0
+    while n**2 + a*n + b in PRIMES:
+        n += 1
+    return n
 
 # ######################################################################
 
