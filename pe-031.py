@@ -2,43 +2,48 @@
 
 """
 Charles McEachern
-2018-11-14
-https://projecteuler.net/problem=30
+2018-11-13
+https://projecteuler.net/problem=31
 
-Surprisingly there are only three numbers that can be written as the sum
-of fourth powers of their digits:
+In England the currency is made up of pound, £, and pence, p, and there
+are eight coins in general circulation:
 
-1634 = 1**4 + 6**4 + 3**4 + 4**4
-8208 = 8**4 + 2**4 + 0**4 + 8**4
-9474 = 9**4 + 4**4 + 7**4 + 4**4
-As 1 = 1**4 is not a sum it is not included.
+1p, 2p, 5p, 10p, 20p, 50p, £1 (100p) and £2 (200p).
+It is possible to make £2 in the following way:
 
-The sum of these numbers is 1634 + 8208 + 9474 = 19316.
-
-Find the sum of all the numbers that can be written as the sum of fifth
-powers of their digits.
+1×£1 + 1×50p + 2×20p + 1×5p + 1×2p + 3×1p
+How many different ways can £2 be made using any number of coins?
 """
+
+import math
 
 # ######################################################################
 
-def power_digit_sum(n, exp):
-    tally = 0
-    while n:
-        n, d = n//10, n % 10
-        tally += d**exp
-    return tally
-
-# ----------------------------------------------------------------------
+COINS = [1, 2, 5, 10, 20, 50, 100, 200]
 
 def main():
-    # We know that at most this will be a six-digit number, since 7*9**5
-    # is a six-digit number. So no possible seven-digit number can
-    # satisfy the condition.
-    matches = []
-    for n in range(2, 999999):
-        if n == power_digit_sum(n, 5):
-            matches.append(n)
-    return print(sum(matches))
+    target = 200
+    combos = [ [] ]
+    # The 1p and 2p coins are the expensive ones to compute, so leave
+    # them off for now. Figure out all the different ways we can arrange
+    # 5p and up to get no more than 200p.
+    for coin in sorted(COINS, reverse=True):
+        if coin < 3:
+            break
+        new_combos = []
+        for combo in combos:
+            leftover = target - sum(combo)
+            for i in range(leftover//coin + 1):
+                new_combos.append( combo + i*[coin] )
+        combos = new_combos
+    # If the coins sum to 200 exactly, that's one combination. If they
+    # sum to 195, that's 3 combinations, since there can be zero, one,
+    # or two 2p coins (and the rest 1p). If we are Np shy, that
+    # represents 1 + N//2 options.
+    ncombos = 0
+    for combo in combos:
+        ncombos += 1 + (target-sum(combo))//2
+    return print(ncombos)
 
 # ######################################################################
 
