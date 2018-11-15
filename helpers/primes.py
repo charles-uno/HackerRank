@@ -40,8 +40,8 @@ def factor_counts(n):
     """Factorize a number, then return a dictionary. Index is prime
     factors, value is the power of that factor.
     """
-    factors = list( factors(n) )
-    return { x:factors.count(x) for x in set(factors) }
+    facs = list( factors(n) )
+    return { x:facs.count(x) for x in set(facs) }
 
 # ######################################################################
 
