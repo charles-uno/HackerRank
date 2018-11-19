@@ -3,25 +3,13 @@
 
 package main
 
-import "fmt"
-
-// =====================================================================
-
-func factors(n int) []int {
-    factors := []int{}
-    for p := 2; n > 1 ; p++ {
-        // If n % p == 0, p must be prime. We have already checked
-        // against everything smaller.
-        for n % p == 0 {
-            n = n/p
-            factors = append(factors, p)
-        }
-    }
-    return factors
-}
+import (
+    "fmt"
+    "helpers"
+)
 
 // =====================================================================
 
 func main() {
-    for _, f := range factors(600851475143) { fmt.Println(f) }
+    for _, f := range helpers.Factors(600851475143) { fmt.Println(f) }
 }
