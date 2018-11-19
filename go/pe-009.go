@@ -27,5 +27,4 @@ func main() {
             if !err && a + b + c == 1000 { fmt.Println(a*b*c) }
         }
     }
-
 }
