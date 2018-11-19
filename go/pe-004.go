@@ -1,3 +1,4 @@
+// 2018-11-18
 
 package main
 
@@ -9,7 +10,7 @@ import (
 // Three digits isn't much. Let's brute force this one.
 
 // NOTE -- There are certainly ways we could have done this prettier.
-// Onward and upward! 
+// Onward and upward!
 
 // =====================================================================
 
