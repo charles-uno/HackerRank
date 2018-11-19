@@ -18,6 +18,27 @@ func Max(arr []int) int {
     sort.Ints(arr)
     return arr[len(arr)-1]
 }
+// =====================================================================
+
+func isprime(i int, primes []int) bool {
+    // There's got to be a better way to do this.
+    for _, p := range primes {
+        if i % p == 0 { return false }
+    }
+    return true
+}
+
+// ---------------------------------------------------------------------
+
+func NthPrime(n int) int {
+    primes := []int{}
+    i := 2
+    for len(primes) < n {
+        if isprime(i, primes) { primes = append(primes, i) }
+        i += 1
+    }
+    return primes[len(primes)-1]
+}
 
 // =====================================================================
 
