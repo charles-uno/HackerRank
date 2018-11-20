@@ -2,6 +2,7 @@
 package helpers
 
 import (
+    "math"
     "sort"
 )
 
@@ -17,6 +18,29 @@ func Min(arr []int) int {
 func Max(arr []int) int {
     sort.Ints(arr)
     return arr[len(arr)-1]
+}
+
+// ---------------------------------------------------------------------
+
+func Sum(seq []int) int {
+    sum := 0
+    for _, s := range seq { sum += s }
+    return sum
+}
+
+// ---------------------------------------------------------------------
+
+func IntSqrt(n int) (int, bool) {
+    // First attempt at the value, error dual returns.
+    sqrt := math.Pow(float64(n), 0.5)
+    if math.Ceil(sqrt) != math.Floor(sqrt) { return 0, true }
+    return int(sqrt), false
+}
+
+// ---------------------------------------------------------------------
+
+func FloorSqrt(n int) int {
+    return int( math.Pow(float64(n), 0.5) )
 }
 
 // =====================================================================
@@ -39,6 +63,22 @@ func NthPrime(n int) int {
         i += 1
     }
     return primes[len(primes)-1]
+}
+
+// ---------------------------------------------------------------------
+
+func PrimesUpto(n int) []int {
+    sieve := make([]bool, n)
+    for i:=2; i<n; i++ { sieve[i] = true }
+    for i:=2; i<n; i++ {
+        if !sieve[i] { continue }
+        for j:=2*i; j<n; j+=i { sieve[j] = false }
+    }
+    primes := []int{}
+    for i, s := range sieve {
+        if s { primes = append(primes, i) }
+    }
+    return primes
 }
 
 // =====================================================================
@@ -64,4 +104,15 @@ func FactorPowers(n int) map[int]int {
         factor_powers[p] += 1
     }
     return factor_powers
+}
+
+// ---------------------------------------------------------------------
+
+func NumDivisors(n int) int {
+    if n == 0 { return 0 }
+    num_divisors := 1
+    for _, power := range FactorPowers(n) {
+        num_divisors *= power+1
+    }
+    return num_divisors
 }
