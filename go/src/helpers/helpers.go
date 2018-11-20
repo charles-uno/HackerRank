@@ -116,3 +116,37 @@ func NumDivisors(n int) int {
     }
     return num_divisors
 }
+// =====================================================================
+
+func Factorial(n int) int {
+    if n == 0 {
+        return 1
+    } else {
+        return n*Factorial(n-1)
+    }
+}
+
+// ---------------------------------------------------------------------
+
+func Choose(n int, k int) int {
+    // We can't compute factorials directly. The numbers get too big.
+    factor_powers := make(map[int]int)
+    // For values in the numerator, add up prime factor powers.
+    for i:=k+1; i<=n; i++ {
+        for prime, power := range FactorPowers(i) {
+            factor_powers[prime] += power
+        }
+    }
+    // For those in the senominator, subtract off.
+    for i:=1; i<=n-k; i++ {
+        for prime, power := range FactorPowers(i) {
+            factor_powers[prime] -= power
+        }
+    }
+    // Tally up the remaining primes.
+    tally := 1
+    for prime, power := range factor_powers {
+        for i:=0; i<power; i++ { tally *= prime }
+    }
+    return tally
+}
