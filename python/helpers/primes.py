@@ -55,14 +55,19 @@ def nth_prime(n):
 
 def primes_upto(n):
     """Accept an integer. Yield primes up to there using a sieve."""
-    sieve = np.ones(n, dtype=bool)
-    sieve[:2] = False
-    for i in range(2, math.floor(n**0.5)):
+    # No need to track evens.
+    if n >= 2:
+        yield 2
+    sieve = np.ones(n//2, dtype=bool)
+    sieve[0] = False
+    # If i is true, 2i+1 is prime. So we can strike (2i+1)**2 and
+    # further multiples.
+    for i in range(1, int(n**0.5)//2+1):
         if sieve[i]:
-            sieve[2*i::i] = False
-    for i in range(n):
-        if sieve[i]:
-            yield i
+            sieve[2*i*i+2*i::2*i+1] = False
+    for i, isprime in enumerate(sieve):
+        if isprime:
+            yield 2*i+1
 
 # ######################################################################
 
