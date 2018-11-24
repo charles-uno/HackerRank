@@ -74,10 +74,10 @@ def roman(n):
 
 # ----------------------------------------------------------------------
 
-def latin(r):
+def arabic(r):
     for val, rom in sorted(ROMAN_VALUES.items(), reverse=True):
         if r.startswith(rom):
-            return val + latin( r[len(rom):] )
+            return val + arabic( r[len(rom):] )
     return 0
 
 # ----------------------------------------------------------------------
@@ -87,7 +87,7 @@ def main():
     # latin numerals and back again to get the most terse form for each.
     rn_old, rn_new = read_numerals(), []
     for rn in rn_old:
-        ln = latin(rn)
+        ln = arabic(rn)
         rn_new.append( roman(ln) )
     digs_old = sum( len(x) for x in rn_old )
     digs_new = sum( len(x) for x in rn_new )
