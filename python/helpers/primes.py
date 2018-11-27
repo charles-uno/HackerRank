@@ -89,6 +89,15 @@ def scm(*args):
 
 # ----------------------------------------------------------------------
 
+def gcd(*args):
+    """Accept two any number of positive integers. Return the greatest
+    common divisor.
+    """
+    divs = [ divisors(n) for n in args ]
+    return max( set.intersection(*divs) )
+
+# ----------------------------------------------------------------------
+
 def divisors(n):
     """Accept an integer. Return a set of its divisors, including
     itself.
@@ -100,6 +109,15 @@ def divisors(n):
     for factor, count in fc.items():
         divs = { d*factor**i for d in divs for i in range(count+1) }
     return divs
+
+# ----------------------------------------------------------------------
+
+def reduce_fraction(p, q):
+    """Accept two integers. Return them, scaled down by their greatest
+    common divisor.
+    """
+    common_factor = gcd(abs(p), abs(q))
+    return p//common_factor, q//common_factor
 
 # ----------------------------------------------------------------------
 
